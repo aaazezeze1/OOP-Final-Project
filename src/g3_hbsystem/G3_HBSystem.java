@@ -38,16 +38,18 @@ class Patient {
         System.out.println("Total Bill: " + totalBill);
     }
 }
+
 class InsuredPatient extends Patient {
     public InsuredPatient(String name, int age, String roomType, double totalBill) {
         super(name, age, roomType, totalBill);
     }
-    
+
     public void UpdateBill(double newBill)
     {
         this.totalBill = newBill;
     }
 }
+
 // Custom class for program
 public class G3_HBSystem {
     static void SystemStart()
@@ -170,18 +172,17 @@ public class G3_HBSystem {
             System.out.println("Please Run the Program and Try Again.");
         }
     }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
+
+    public static void adminLogin(Scanner scanner)
+    {
+        System.out.println("----- ADMIN LOGIN -----");
+        System.out.println();
+
         boolean notLoggedIn = true;
-        
+
         String username = "Admin";
         String password = "Admin123";
-        
-        System.out.println("Welcome to G3_HB System!");
-        System.out.println();
-        
+
         // Login loop until user finally enters the right input
         while (notLoggedIn){
             try {
@@ -189,7 +190,7 @@ public class G3_HBSystem {
                 String usernameInput = scanner.next();
                 System.out.println("Enter Password: ");
                 String passwordInput = scanner.next();
-        
+
                 if(usernameInput.equals(username) && passwordInput.equals(password)) {
                     System.out.println();
                     System.out.println("Login Success. Welcome Admin!.");
@@ -206,5 +207,64 @@ public class G3_HBSystem {
                 System.out.println("Please Try Again.");
             }
         }
+    }
+
+    public static void ptVerification(Scanner scanner)
+    {
+        //IN PROGRESS
+        //patient veification method that directs to viewing their bills or paying
+        //must have a predefined data or admin will be the one creating those
+
+        System.out.println("----- PATIENT VERIFICATION -----");
+        System.out.println();
+
+        System.out.println(" Enter your name: ");
+        String patientName = scanner.nextLine();
+        System.out.println(" Enter your patient ID: ");
+        String patientID = scanner.nextLine();
+
+        System.out.println("Hello, "+ patientName + ".");
+
+        System.out.println("---Choose what you want to do: ---");
+        System.out.println("1. View my bills.");
+        System.out.println("2. Pay my bills.");
+        System.out.println("3. Go to main menu.");
+
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println(">>>============================================<<<");
+        System.out.println("     WELCOME TO G3 HOSPITAL BILLING SYSTEM");
+        System.out.println(">>>============================================<<<");
+        System.out.println();
+
+        boolean askingUser = true;
+        //options asking if the user is an admin, patient, or want to exit
+        while(askingUser)
+        {
+            System.out.println("Are you a...");
+            System.out.println("Enter 'A' if Admin"); //create patients bills
+            System.out.println("Enter 'P' if Patient"); //view their bills
+            System.out.println("Enter 'E' to Exit"); //exit program
+            System.out.println();
+
+            System.out.println("Enter your choice: ");
+            String userChoice = scanner.nextLine().trim().toUpperCase();
+
+            switch (userChoice)
+            {
+                case "A": adminLogin(scanner); break;
+                case "P": ptVerification(scanner); break;
+                case "E":
+                    System.out.println("Thank you for using G3 Hospital Billing System!");
+                    scanner.close();
+                    break;
+                default: System.out.println("Invalid input. Please type 'A' for Admin, 'P' for Patient, and 'E' to exit.");
+            }
+
+        }
+
     }
 }
