@@ -1,14 +1,10 @@
 package g3_hbsystem;
 
-//admin login  and admin menu
-
 import java.util.Scanner;
 
 public class Admin {
-    Scanner scanner = new Scanner(System.in);
 
-    public void Login(Scanner scanner)
-    {
+    public void Login(Scanner scanner) {
         System.out.println("----- ADMIN LOGIN -----");
         System.out.println();
 
@@ -17,37 +13,34 @@ public class Admin {
         String username = "Admin";
         String password = "Admin123";
 
-        // Login loop until user finally enters the right input
-        while (notLoggedIn){
+        while (notLoggedIn) {
             try {
                 System.out.print("Enter Username: ");
                 String usernameInput = scanner.next();
                 System.out.print("Enter Password: ");
                 String passwordInput = scanner.next();
 
-                if(usernameInput.equals(username) && passwordInput.equals(password)) {
+                if (usernameInput.equals(username) && passwordInput.equals(password)) {
                     System.out.println();
-                    System.out.println("Login Success. Welcome Admin!.");
+                    System.out.println("Login Success. Welcome Admin!");
                     System.out.println();
                     notLoggedIn = false;
-                    adminMenu();
+                    adminMenu(scanner);
                 } else {
                     System.out.println();
                     System.out.println("Wrong Username and Password. Please Try Again.");
                     System.out.println();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Please Try Again.");
             }
         }
     }
 
-    public void adminMenu()
-    {
+    public static void adminMenu(Scanner scanner) {
         boolean loggedIn = true;
 
-        while(loggedIn){
+        while (loggedIn) {
             System.out.println("----- ADMIN MENU -----");
             System.out.println(" 1. Create New Patient Bill Record.");
             System.out.println(" 2. Payment Section.");
@@ -55,31 +48,19 @@ public class Admin {
             System.out.println(" 4. Exit.");
             System.out.println();
 
-            System.out.println("Enter your choice here: ");
+            System.out.print("Enter your choice here: ");
             int choice = scanner.nextInt();
 
-            switch (choice)
-            {
-                case 1:
-                    //method for creating new patient bill record
+            switch (choice) {
+                case 1 -> G3_HBSystem.createPatientBill(scanner);
+                case 2 -> G3_HBSystem.processPayment(scanner);
+                case 3 -> G3_HBSystem.viewPatientRecord(scanner);
+                case 4 -> {
+                    System.out.println("Thank you for using G3 Hospital Billing System.");
                     loggedIn = false;
-                    break;
-                case 2:
-                    //method for paying
-                    loggedIn = false;
-                    break;
-                case 3:
-                    //view patient bill record
-                    loggedIn = false;
-                    break;
-                case 4:
-                        System.out.println("Thank you for using G3 Hospital Billing System.");
-                    loggedIn = false;
-                    return;
-                default:
-                    System.out.println(" Invalid choice. Please try again.");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
-
     }
 }
