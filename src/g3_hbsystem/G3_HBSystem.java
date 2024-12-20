@@ -40,7 +40,7 @@ class Person {
 
     // Method to directly return patient details (without recursion)
     public String getPatientInformation() {
-        return "Patient ID: " + this.patientId + "\nPatient Name: " + this.patientName;
+        return "\nPatient ID: " + this.patientId + "\nPatient Name: " + this.patientName;
     }
 
     // Static method to fetch patient details from the database, returning a Person object
@@ -443,6 +443,7 @@ public class G3_HBSystem {
             //PatientBillingReport recordReportPayment = new PatientBillingReport();
             PatientBilling_Abstract absrecordReportPayment_obj = new PatientBillingReport();
 
+            System.out.println("\n----- Payment Section -----");
             // Prompt the user to enter the Patient ID
             System.out.print("\nEnter Patient ID: ");
             int patientId = scanner.nextInt(); // Read the Patient ID as an integer
@@ -486,6 +487,7 @@ public class G3_HBSystem {
     public static void viewPatientRecord(Scanner scanner) {
         while (true) { // Loop to allow re-entering if invalid input is provided
             try {
+                System.out.println("\n----- View Patient Bill Record -----");
                 // ask the user to enter the Patient ID
                 System.out.print("\nEnter Patient ID: ");
                 int patientId = scanner.nextInt();
@@ -505,7 +507,6 @@ public class G3_HBSystem {
                 } else {
                     System.out.println("No patient found with ID: " + patientId);
                 }
-                return; // Exit the method
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer for the Patient ID.");
                 scanner.nextLine(); // Clear the invalid input
@@ -526,7 +527,7 @@ public class G3_HBSystem {
             try {
                 int choice = scanner.nextInt(); // Read user's choice
                 PatientCountDetail countDetail;
-
+                scanner.nextLine(); // Consume the newline character left by nextInt()
                 switch (choice) {
                     case 1: // Paid Patients
                         countDetail = new PaidPatients();
@@ -539,7 +540,7 @@ public class G3_HBSystem {
                     default:
                         System.out.println("Invalid choice. Please enter 1 or 2.");
                 }
-                return; // Exit the method
+
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer choice (1 or 2).");
                 scanner.nextLine(); // Clear the invalid input
@@ -623,7 +624,7 @@ public class G3_HBSystem {
                 // Prompt the user to press enter to go to the admin menu
                 if (loggedIn) {
                     System.out.println("\nPress 'enter' to go back to the admin menu.");
-                    scanner.nextLine(); // Wait for the user to press space or tab
+                    scanner.nextLine(); // Wait for the user to press 'enter'
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer choice.");
