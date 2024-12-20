@@ -116,7 +116,7 @@ public class PatientBillingReport extends PatientBilling_Abstract{
             therapyStmt.setInt(1, patientId);
             ResultSet therapyRS = therapyStmt.executeQuery();
             if (therapyRS.next()) {
-                System.out.println("Therapeutic Procedure (" + therapyRS.getString("therapy_name") + ": " +
+                System.out.println("Therapeutic Procedure (" + therapyRS.getString("therapy_name") + "): " +
                         therapyRS.getDouble("therapy_fee"));
             } else {
                 System.out.println("No therapeutic fee details found.");
