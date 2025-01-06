@@ -66,7 +66,7 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Patient details saved successfully to the database.");
+                System.out.println(">>Patient details saved successfully to the database.<<");
             } else {
                 System.out.println("Error saving patient details to the database.");
             }
@@ -90,7 +90,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Room fee details saved successfully to the database.");
+                //System.out.println("Room fee details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving room fee details to the database.");
             }
@@ -111,7 +112,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Consultation fee details saved successfully to the database.");
+                //System.out.println("Consultation fee details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving consultation fee details to the database.");
             }
@@ -132,7 +134,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Diagnostic Procedure fee details saved successfully to the database.");
+                //System.out.println("Diagnostic Procedure fee details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving diagnostic procedure details to the database.");
             }
@@ -154,7 +157,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Therapeutic procedure fee details saved successfully to the database.");
+                //System.out.println("Therapeutic procedure fee details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving therapeutic procedure details to the database.");
             }
@@ -177,7 +181,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Medication fee details saved successfully to the database.");
+                //System.out.println("Medication fee details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving medication fee details to the database.");
             }
@@ -200,7 +205,8 @@ public class Patient extends Person implements IPatient {
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Discount details saved successfully to the database.");
+                //System.out.println("Discount details saved successfully to the database.");
+                System.out.println(" ");
             } else {
                 System.out.println("Error saving room fee details to the database.");
             }
@@ -225,7 +231,7 @@ public class Patient extends Person implements IPatient {
             // Execute the update
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Total discount calculated successfully for patient ID: " + getPatientId());
+                System.out.println(">>Total discount calculated successfully for patient ID: " + getPatientId() + "<<");
             } else {
                 System.out.println("No rows were updated. Please check the patient ID: " + getPatientId());
             }
@@ -333,7 +339,7 @@ public class Patient extends Person implements IPatient {
                 pstmtInsert.setInt(5, therapeuticId);
                 pstmtInsert.setInt(6, medicationId);
                 pstmtInsert.executeUpdate();
-                //System.out.println("Record inserted successfully.");
+                System.out.println(">>Record inserted successfully.<<");
             }
 
             // Update total bill in billing table
@@ -341,7 +347,7 @@ public class Patient extends Person implements IPatient {
                 pstmtUpdate.setInt(1, patientId);
                 pstmtUpdate.setInt(2, patientId);
                 pstmtUpdate.executeUpdate();
-                //System.out.println("Total bill updated successfully.");
+                System.out.println(">>Total bill updated successfully: " + patientId + "<<");
             }
 
         } catch (SQLException e) {
@@ -422,7 +428,7 @@ public class Patient extends Person implements IPatient {
                 pstmtInsert.setDouble(4, finalBill);
                 pstmtInsert.setInt(5, paymentStatus.equals("Not Paid") ? 0 : 1);
                 pstmtInsert.executeUpdate();
-                System.out.println("Final bill inserted successfully. Payment status: " + paymentStatus);
+                System.out.println(">>Final bill inserted successfully.<< \n>>Payment status: " + paymentStatus + "<<");
             }
 
         } catch (SQLException e) {

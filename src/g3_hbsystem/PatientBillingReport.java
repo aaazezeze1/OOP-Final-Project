@@ -53,7 +53,7 @@ public class PatientBillingReport extends PatientBilling_Abstract{
                 Person patient = new Person(patientRS.getInt("patient_id"), patientRS.getString("patient_name"));
 
                 // Print patient information
-                System.out.println("\n===== Patient Information =====");
+                System.out.println("\n=====================<<< Patient Information >>>=====================");
                 System.out.println(patient.getPatientInformation()); // Using the getPatientInformation method in the Person class
                 System.out.println("Age: " + patientRS.getInt("patient_age"));
                 System.out.println("Address: " + patientRS.getString("patient_address"));
@@ -72,7 +72,7 @@ public class PatientBillingReport extends PatientBilling_Abstract{
     @Override
     public void printBillingDetails(int patientId) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            System.out.println("\n===== Patient Bill Record =====");
+            System.out.println("\n=====================<<< Patient Bill Record >>>=====================");
 
             // Room Fee Details in roomfee table
             String roomFeeQuery = "SELECT room_type, stay_duration, roomfee_price FROM roomfee WHERE patient_id = ?";
@@ -187,8 +187,8 @@ public class PatientBillingReport extends PatientBilling_Abstract{
                     } else {
                         System.out.println("Remaining balance: " + Math.abs(change));  // Show any negative balance
                     }
-                } else {
-                    // For unpaid bills, show remaining balance
+                } else if (amountPaid > 0) {
+                    // Show remaining balance only if a partial payment has been made
                     System.out.println("Remaining balance: " + remainingBalance);
                 }
             } else {
@@ -221,14 +221,14 @@ public class PatientBillingReport extends PatientBilling_Abstract{
                 // Calculate remaining balance after payment
                 remainingBalance = finalBill - newAmountPaid;
 
-                // If the remaining balance is 0 or less, mark the bill as paid
                 if (remainingBalance <= 0) {
+                    double changeAmount = Math.abs(remainingBalance);
                     // Full payment received, update payment status to "Paid"
-                    updatePaymentStatus(conn, patientId, newAmountPaid, true, 0); // Full payment
-                    System.out.println("Payment processed successfully. Change: " + Math.abs(remainingBalance));
+                    updatePaymentStatus(conn, patientId, newAmountPaid, true, 0, changeAmount); // Full payment
+                    System.out.println("Payment processed successfully. Change: " + changeAmount);
                 } else {
                     // Partial payment, update remaining balance
-                    updatePaymentStatus(conn, patientId, newAmountPaid, false, remainingBalance);
+                    updatePaymentStatus(conn, patientId, newAmountPaid, false, remainingBalance, 0);
                     System.out.println("Partial payment recorded. Remaining balance: " + remainingBalance);
                 }
             } else {
@@ -263,13 +263,14 @@ public class PatientBillingReport extends PatientBilling_Abstract{
         return false; // Default to unpaid if no record is found or an error occurs
     }
 
-    public void updatePaymentStatus(Connection conn, int patientId, double amountPaid, boolean isPaid, double remainingBalance) throws SQLException {
-        String updateQuery = "UPDATE final_billing SET amount_paid = ?, payment_status = ?, remaining_balance = ? WHERE patient_id = ?";
+    public void updatePaymentStatus(Connection conn, int patientId, double amountPaid, boolean isPaid, double remainingBalance, double changeAmount) throws SQLException {
+        String updateQuery = "UPDATE final_billing SET amount_paid = ?, payment_status = ?, remaining_balance = ?, change_amount = ? WHERE patient_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
             stmt.setDouble(1, amountPaid);  // Update the amount paid
             stmt.setBoolean(2, isPaid);  // Update payment status (true = paid, false = unpaid)
             stmt.setDouble(3, remainingBalance);  // Update the remaining balance
-            stmt.setInt(4, patientId);  // Update for the given patient
+            stmt.setDouble(4, changeAmount);  // Update the change amount
+            stmt.setInt(5, patientId);  // Update for the given patient
             stmt.executeUpdate();
         }
     }

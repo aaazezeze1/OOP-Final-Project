@@ -6,7 +6,6 @@
 package g3_hbsystem;
 
 /*
-
   @author Amazing
  */
 
@@ -40,7 +39,7 @@ class Person {
 
     // Method to directly return patient details (without recursion)
     public String getPatientInformation() {
-        return "\nPatient ID: " + this.patientId + "\nPatient Name: " + this.patientName;
+        return "Patient ID: " + this.patientId + "\nPatient Name: " + this.patientName;
     }
 
     // Static method to fetch patient details from the database, returning a Person object
@@ -96,23 +95,24 @@ public class G3_HBSystem {
         }
     }
 
+    //Variables used
+    //roomfee
     public static String roomType;
     public static int days;
     public static double roomRate;
-
+    //consultationfee
     public static double consultFee;
-
+    //diagnosticfee
     public static double dprocedurePrice;
     public static String procedureName;
-
+    //therapeuticfee
     public static double tprocedurePrice;
     public static String tProcedureName;
-
+    //medicationfee
     public static String medicineName;
     public static int quantity;
     public static double totalPrice;
-
-    // Variables for discounts as BigDecimal
+    //discounts (BigDecimal)
     public static BigDecimal insuranceDiscount = BigDecimal.ZERO;
     public static BigDecimal pwdDiscount = BigDecimal.ZERO;
     public static BigDecimal seniorCitizenDiscount = BigDecimal.ZERO;
@@ -124,7 +124,9 @@ public class G3_HBSystem {
             // Refresh patientCounter from the database
             initializePatientCounter();
 
-            System.out.print("\n-------- Enter Patient Details --------");
+            System.out.print("\n---------------->>> CREATE NEW PATIENT BILL RECORD <<<----------------");
+
+            System.out.print("\n--------------------- Enter Patient Information ---------------------");
 
             System.out.println("\nPatient ID:" + patientCounter);
             scanner.nextLine();
@@ -150,6 +152,8 @@ public class G3_HBSystem {
             iPatientobj.saveToDatabase();
 
             //--------------------------------------------------------------------------------------------------------//
+
+            System.out.print("\n--------------------- Enter Patient Bill Record ---------------------");
 
             // Room Fee
             System.out.println("\nDid the patient stay in a room? (Yes/No)");
@@ -242,7 +246,7 @@ public class G3_HBSystem {
                     case 7: dprocedurePrice = 100.00; procedureName = "Urinalysis"; break;
                     case 8: dprocedurePrice = 350.00; procedureName = "Chest X-ray"; break;
                     case 9: dprocedurePrice = 200.00; procedureName = "Mammography"; break;
-                    default: System.out.println("Invalid choice! Please select a valid diagnostic procedure."); break;
+                    default: System.out.println("Invalid choice! Please select a valid diagnostic procedurbreak;e.");
                 }
 
                 if (!procedureName.isEmpty()) {
@@ -308,9 +312,9 @@ public class G3_HBSystem {
                 System.out.println("No therapeutic procedures to record. Proceed to Medication Fee.");
             }
 
-//--------------------------------------------------------------------------------------------------------//
+            //--------------------------------------------------------------------------------------------------------//
 
-// Medications
+            // Medications
             System.out.println("\nWas the patient prescribed medication? (Yes/No)");
             String prescribed = scanner.nextLine();
             if (prescribed.equalsIgnoreCase("Yes")) {
@@ -440,10 +444,9 @@ public class G3_HBSystem {
     // METHOD FOR PAYING
     public static void processPayment(Scanner scanner) {
         try {
-            //PatientBillingReport recordReportPayment = new PatientBillingReport();
             PatientBilling_Abstract absrecordReportPayment_obj = new PatientBillingReport();
 
-            System.out.println("\n----- Payment Section -----");
+            System.out.print("\n---------------->>> PAYMENT SECTION <<<----------------");
             // Prompt the user to enter the Patient ID
             System.out.print("\nEnter Patient ID: ");
             int patientId = scanner.nextInt(); // Read the Patient ID as an integer
@@ -452,7 +455,7 @@ public class G3_HBSystem {
             // Check if the patient exists in the database records
             Person patient = Person.fetchPatientInformation(patientId);
             if (patient != null) {
-                System.out.println("Patient ID: " + patient.getPatientId() +
+                System.out.println("\nPatient ID: " + patient.getPatientId() +
                         "\nPatient Name: " + patient.getPatientName());
                 // Print the patient billing record using the printBillingDetails in the PatientBillingReport class
                 absrecordReportPayment_obj.printBillingDetails(patientId);
@@ -473,7 +476,6 @@ public class G3_HBSystem {
             } else {
                 System.out.println("No patient found with ID: " + patientId);
             }
-            return; // Exit the method
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid integer.");
             scanner.nextLine(); // Clear the invalid input
@@ -487,7 +489,7 @@ public class G3_HBSystem {
     public static void viewPatientRecord(Scanner scanner) {
         while (true) { // Loop to allow re-entering if invalid input is provided
             try {
-                System.out.println("\n----- View Patient Bill Record -----");
+                System.out.print("\n---------------->>> VIEW PATIENT BILL RECORD <<<----------------");            // Prompt the user to enter the Patient ID
                 // ask the user to enter the Patient ID
                 System.out.print("\nEnter Patient ID: ");
                 int patientId = scanner.nextInt();
@@ -503,7 +505,7 @@ public class G3_HBSystem {
                     // print the patient billing record using the printBillingDetails in the PatientBillingReport class
                     PatientBillingReport recordReport = new PatientBillingReport();
                     recordReport.printBillingDetails(patientId);
-                    break; // Exit the loop once a valid patient ID is entered
+                    break;
                 } else {
                     System.out.println("No patient found with ID: " + patientId);
                 }
@@ -517,8 +519,9 @@ public class G3_HBSystem {
     //---------------------------------------------------------------------------------------------------------------//
     //METHOD TO VIEW THE COUNT OF THE PAID OR UNPAID PATIENTS IN THE DATABASE -- part of polymorphism
     public static void viewCountofPatients(Scanner scanner) {
-        System.out.println("\n----- Number of Paid and Unpaid Patients -----");
-        System.out.println("Choose an option:");
+        System.out.print("\n---------------->>> NUMBER OF PAID AND UNPAID PATIENT <<<----------------");
+        // Prompt the user to enter the Patient ID
+        System.out.println("\nChoose an option:");
         System.out.println("1. View number of paid patients");
         System.out.println("2. View number of unpaid patients");
         System.out.print("Enter your choice (1 or 2): ");
@@ -526,16 +529,22 @@ public class G3_HBSystem {
         while (true) { // Loop until a valid input is provided
             try {
                 int choice = scanner.nextInt(); // Read user's choice
-                PatientCountDetail countDetail;
+
+                //creating object of the abstract class PatientCountDetail
+                PatientCountDetail paidcountDetail = new PaidPatients();
+                PatientCountDetail unpaidcountDetail = new UnpaidPatients();
+
                 scanner.nextLine(); // Consume the newline character left by nextInt()
                 switch (choice) {
                     case 1: // Paid Patients
-                        countDetail = new PaidPatients();
-                        System.out.println("Number of patients who have paid: " + countDetail.countPatients());
+                        //calling the countPatients method in Paidpatients class
+                        System.out.println("\nNumber of patients who have paid: " + paidcountDetail.countPatients());
+                        System.out.println(" ");
                         return; // Exit the loop
                     case 2: // Unpaid Patients
-                        countDetail = new UnpaidPatients();
-                        System.out.println("Number of patients with unpaid bills: " + countDetail.countPatients());
+                        //calling the countPatients method in UnpaidPatients class
+                        System.out.println("\nNumber of patients with unpaid bills: " + unpaidcountDetail.countPatients());
+                        System.out.println(" ");
                         return; // Exit the loop
                     default:
                         System.out.println("Invalid choice. Please enter 1 or 2.");
@@ -552,12 +561,12 @@ public class G3_HBSystem {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(">>>============================================<<<");
-        System.out.println("     WELCOME TO G3 HOSPITAL BILLING SYSTEM");
-        System.out.println(">>>============================================<<<");
+        System.out.println(">>>=================================================================<<<");
+        System.out.println("                WELCOME TO G3 HOSPITAL BILLING SYSTEM");
+        System.out.println(">>>=================================================================<<<");
         System.out.println();
 
-        System.out.println("------- ADMIN LOGIN -------");
+        System.out.println("----------------------------- ADMIN LOGIN -----------------------------");
         System.out.println();
 
         boolean notLoggedIn = true;
@@ -603,6 +612,7 @@ public class G3_HBSystem {
             System.out.println(" 3. View Patient Bill Record.");
             System.out.println(" 4. View Count of Paid or Unpaid Patient Bill Record.");
             System.out.println(" 5. Exit.");
+            System.out.println("------------------------------------------------------");
             System.out.println();
 
             System.out.print("Enter your choice here: ");
@@ -614,7 +624,7 @@ public class G3_HBSystem {
                     case 3 -> G3_HBSystem.viewPatientRecord(scanner);
                     case 4 -> G3_HBSystem.viewCountofPatients(scanner);
                     case 5 -> {
-                        System.out.println("Thank you for using G3 Hospital Billing System.");
+                        System.out.println("\nThank you for using G3 Hospital Billing System.");
                         loggedIn = false;
                         System.out.println("Logging out...");
                         endSession(); // End connection to the database
